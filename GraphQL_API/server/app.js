@@ -8,6 +8,7 @@ const app = express();
 // Set up GraphQL server at /graphql endpoint
 app.use('/graphql', graphqlHTTP({
   schema,
+  graphiql: true
 }));
 
 app.listen(4000, ()=> {
