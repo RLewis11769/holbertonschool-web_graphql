@@ -4,6 +4,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
+  GraphQLList,
 } = require('graphql');
 const lodash = require('lodash');
 
@@ -14,17 +15,18 @@ const tasks = [
   title: 'Create your first webpage',
   weight: 1,
   description: 'Create your first HTML file 0-index.html with: -Add the doctype on the first line (without any comment) -After the doctype, open and close a html tag Open your file in your browser (the page should be blank)',
-  projectId: 1,
+  projectId: '1',
   },
   {
     id: '2',
     title: 'Structure your webpage',
     weight: 1,
     description: 'Copy the content of 0-index.html into 1-index.html Create the head and body sections inside the html tag, create the head and body tags (empty) in this order',
-    projectId: 1,
+    projectId: '1',
   }
 ]
 
+// Project data as defined in ProjectType
 const projects = [
   {id: '1',
     title: 'Advanced HTML',
@@ -38,27 +40,6 @@ const projects = [
   }
 ]
 
-// Schema definition for tasks
-const TaskType = new GraphQLObjectType({
-  name: 'Task',
-  fields: () => ({
-    id: { type: GraphQLString },
-    title: { type: GraphQLString },
-    weight: { type: GraphQLInt },
-    description: { type: GraphQLString }
-  })
-});
-
-const ProjectType = new GraphQLObjectType({
-  name: 'Project',
-  fields: () => ({
-    id: { type: GraphQLID },
-    title: { type: GraphQLString },
-    weight: { type: GraphQLInt },
-    description: { type: GraphQLString },
-  })
-});
-
 // Root query for defining types of queries
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -70,8 +51,49 @@ const RootQuery = new GraphQLObjectType({
     },
     project: {
       type: ProjectType,
-      args: { id: { type: GraphQLString } },
+      args: { id: { type: GraphQLID } },
       resolve: (parent, args) => lodash.find(projects, { id: args.id })
+    },
+    tasks: {
+      type: new GraphQLList(TaskType),
+      resolve: () => tasks
+    },
+    projects: {
+      type: new GraphQLList(ProjectType),
+      resolve: () => projects
+    }
+  })
+});
+
+// Schema definition for tasks
+const TaskType = new GraphQLObjectType({
+  name: 'Task',
+  fields: () => ({
+    id: { type: GraphQLString },
+    title: { type: GraphQLString },
+    weight: { type: GraphQLInt },
+    description: { type: GraphQLString },
+    project: {
+      type: TaskType,
+      resolve(parent, args) {
+        return lodash.find(projects, { id: parent.projectId });
+      }
+    },
+  })
+});
+
+const ProjectType = new GraphQLObjectType({
+  name: 'Project',
+  fields: () => ({
+    id: { type: GraphQLID },
+    title: { type: GraphQLString },
+    weight: { type: GraphQLInt },
+    description: { type: GraphQLString },
+    tasks: {
+      type: new GraphQLList(TaskType),
+      resolve(parent, args) {
+        return lodash.filter(tasks, { projectId: parent.id });
+      }
     },
   })
 });
