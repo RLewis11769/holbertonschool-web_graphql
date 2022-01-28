@@ -3,8 +3,8 @@ const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./schema/schema');
 const mongoose = require('mongoose');
-const task = require('./models/task');
-const project = require('./models/project');
+// const task = require('./models/task');
+// const project = require('./models/project');
 
 const app = express();
 
@@ -14,12 +14,15 @@ app.use('/graphql', graphqlHTTP({
   graphiql: true
 }));
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/db');
-mongoose.connection.once('open', () => {
-  console.log('connected to database');
-});
-
 app.listen(4000, ()=> {
   console.log('now listening for request on port 4000')
+});
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost/graphql');
+mongoose.connection.on('error', (error) => {
+  console.error(error);
+});
+mongoose.connection.once('open', () => {
+  console.log('connected to database');
 });
