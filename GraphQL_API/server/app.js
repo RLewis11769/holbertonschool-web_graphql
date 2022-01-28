@@ -1,8 +1,8 @@
 // Set up Express.js server listening at port 4000
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
-// const schema = require('./schema/schema');
-const schema = require('./schema/schema_orig');
+const schema = require('./schema/schema');
+// const schema = require('./schema/schema_orig');
 const mongoose = require('mongoose');
 
 const app = express();
