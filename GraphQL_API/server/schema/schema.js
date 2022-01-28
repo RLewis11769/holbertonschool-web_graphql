@@ -122,6 +122,22 @@ const Mutation = new GraphQLObjectType({
         return proj.save();
       }
     },
+    addTask: {
+      type: TaskType,
+      args: {
+        title: { type: new GraphQLNonNull(GraphQLString) },
+        weight: { type: new GraphQLNonNull(GraphQLInt) },
+        description: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (parent, args) => {
+        const tsk = new Task({
+          title: args.title,
+          weight: args.weight,
+          description: args.description,
+        });
+        return tsk.save();
+      }
+    },
   })
 });
 
