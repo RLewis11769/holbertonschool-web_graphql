@@ -7,7 +7,6 @@ const {
   GraphQLList,
   GraphQLNonNull
 } = require('graphql');
-const lodash = require('lodash');
 const Project = require('../models/project');
 const Task = require('../models/task');
 
@@ -18,20 +17,20 @@ const RootQuery = new GraphQLObjectType({
     task: {
       type: TaskType,
       args: { id: { type: GraphQLString } },
-      resolve: (parent, args) => lodash.find(Task, { id: args.id })
+      resolve: (parent, args) => Task.findById(args.id)
     },
     project: {
       type: ProjectType,
       args: { id: { type: GraphQLID } },
-      resolve: (parent, args) => lodash.find(Project, { id: args.id })
+      resolve: (parent, args) => Project.findById(args.id)
     },
     tasks: {
       type: new GraphQLList(TaskType),
-      resolve: () => tasks
+      resolve: () => Task.find({})
     },
     projects: {
       type: new GraphQLList(ProjectType),
-      resolve: () => projects
+      resolve: () => Project.find({})
     }
   })
 });
@@ -46,9 +45,7 @@ const TaskType = new GraphQLObjectType({
     description: { type: GraphQLString },
     project: {
       type: TaskType,
-      resolve(parent, args) {
-        return lodash.find(Project, { id: parent.projectId });
-      }
+      resolve: (parent, args) => Project.findById(parent.projectId)
     },
   })
 });
@@ -62,9 +59,7 @@ const ProjectType = new GraphQLObjectType({
     description: { type: GraphQLString },
     tasks: {
       type: new GraphQLList(TaskType),
-      resolve(parent, args) {
-        return lodash.filter(Task, { projectId: parent.id });
-      }
+      resolve: (parent, args) => Task.find({ projectId: parent.id })
     },
   })
 });
