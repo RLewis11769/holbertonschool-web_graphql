@@ -2,7 +2,17 @@ import {
   useState,
   //useEffect
 } from "react";
+import { gql } from 'apollo-boost';
+import { graphql } from 'react-apollo';
 
+
+const getProjectsQuery = gql
+`{
+  projects {
+    id
+    title
+  }
+}`;
 
 function AddTask(props) {
   const [inputs, setInputs] = useState({
@@ -12,7 +22,6 @@ function AddTask(props) {
     projectId: ''
   });
 
-
   const handleChange = (e) => {
     const newInputs = {
       ...inputs
@@ -21,9 +30,28 @@ function AddTask(props) {
     setInputs(newInputs)
   }
 
+  function displayProjects() {
+    console.log(props.data);
+    const data = props.data;
+    if (data.loading) {
+      return (<option disabled>Loading projects...</option>);
+    } else {
+      return data.projects.map(project => {
+          return (
+            <option
+              key={project.id}
+              value={project.id}
+            >
+              {project.title}
+            </option>
+          );
+      })
+    }
+  }
+
   return (
     <form
-      class="task"
+      className="task"
       id="add-task"
       /*onSubmit = {...}*/ >
       <div className="field" >
@@ -61,9 +89,9 @@ function AddTask(props) {
           required>
           <option
             value=""
-            selected="selected"
-            disabled="disabled"> Select project
+            disabled="disabled">Select project
           </option>
+          {displayProjects()}
         </select>
       </div>
       <button> + </button>
@@ -71,4 +99,4 @@ function AddTask(props) {
   );
 }
 
-export default AddTask;
+export default graphql(getProjectsQuery)(AddTask);

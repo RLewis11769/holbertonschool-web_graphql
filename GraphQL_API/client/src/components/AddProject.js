@@ -22,8 +22,8 @@ function AddProject(props) {
 
   return (
     <form
-      class = "project"
-      id = "add-project"
+      className="project"
+      id="add-project"
       /*onSubmit = {...}*/ >
       <div className="field" >
         <label> Project title: </label> 
@@ -44,7 +44,7 @@ function AddProject(props) {
       <div className="field">
       <label> description: </label>
       <textarea
-        name = "description"
+        name="description"
         onChange={handleChange}
         value={inputsProject.description}/> 
       </div>
