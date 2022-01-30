@@ -2,17 +2,8 @@ import {
   useState,
   //useEffect
 } from "react";
-import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
-
-
-const getProjectsQuery = gql
-`{
-  projects {
-    id
-    title
-  }
-}`;
+import { getProjectsQuery } from '../queries/queries';
 
 function AddTask(props) {
   const [inputs, setInputs] = useState({
@@ -31,8 +22,9 @@ function AddTask(props) {
   }
 
   function displayProjects() {
-    console.log(props.data);
+    // console.log(props.data);
     const data = props.data;
+
     if (data.loading) {
       return (<option disabled>Loading projects...</option>);
     } else {

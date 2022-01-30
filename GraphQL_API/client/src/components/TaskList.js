@@ -3,16 +3,8 @@
 //   //useEffect
 // } from "react";
 import TaskDetails from './TaskDetails';
-import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
-
-const getTasksQuery = gql
-`{
-  tasks {
-    id
-    title
-  }
-}`;
+import { getTasksQuery } from '../queries/queries';
 
 function TaskList(props) {
   // const [state, setState] = useState({
