@@ -2,7 +2,9 @@ import {
   useState,
   //useEffect
 } from "react";
-
+import { graphql } from "react-apollo";
+import { flowRight as compose } from "lodash";
+import { getProjectsQuery, addProjectMutation } from "../queries/queries";
 
 function AddProject(props) {
 
@@ -20,11 +22,25 @@ function AddProject(props) {
     setInputsProject(newInputsProject)
   }
 
+  const submitForm = (e) => {
+    e.preventDefault();
+    // Call mutation with variables
+    props.addProjectMutation({
+      variables: {
+        title: inputsProject.title,
+        weight: inputsProject.weight,
+        description: inputsProject.description
+      },
+      // Update dropdown with new project (refetch/rerender)
+      refetchQueries: [{ query: getProjectsQuery }]
+    });
+  }
+
   return (
     <form
       className="project"
       id="add-project"
-      /*onSubmit = {...}*/ >
+      onSubmit = {submitForm} >
       <div className="field" >
         <label> Project title: </label> 
         <input
@@ -53,4 +69,7 @@ function AddProject(props) {
   );
 }
 
-export default AddProject;
+export default compose(
+  graphql(getProjectsQuery, { name: "getProjectsQuery" }),
+  graphql(addProjectMutation, { name: "addProjectMutation" })
+)(AddProject);

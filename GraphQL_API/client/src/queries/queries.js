@@ -16,4 +16,32 @@ const getProjectsQuery = gql
   }
 }`;
 
-export { getTasksQuery, getProjectsQuery };
+// Define variables and types to pass into mutation
+const addTaskMutation = gql
+`mutation($title: String!, $weight: Int!, $description: String!, $projectId: ID!)
+  {
+    addTask(
+      title: $title,
+      weight: $weight,
+      description: $description,
+      projectId: $projectId
+    ) {
+      title
+      id
+    }
+}`;
+
+const addProjectMutation = gql
+`mutation($title: String!, $weight: Int!, $description: String!)
+  {
+    addProject(
+      title: $title,
+      weight: $weight,
+      description: $description
+    ) {
+      title
+      id
+    }
+}`;
+
+export { getTasksQuery, getProjectsQuery, addTaskMutation, addProjectMutation };
