@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 const projectSchema = new mongoose.Schema({
   title: String,
   weight: Number,
-  description: String,
-  tasks: Array
+  description: String
 });
 
 // Export model based on schema
