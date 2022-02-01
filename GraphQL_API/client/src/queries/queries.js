@@ -44,4 +44,22 @@ const addProjectMutation = gql
     }
 }`;
 
-export { getTasksQuery, getProjectsQuery, addTaskMutation, addProjectMutation };
+const getTaskDetailQuery = gql
+`query($id: ID) {
+  task(id: $id) {
+    id
+    title
+    weight
+    description
+    project {
+      title
+      description
+      tasks {
+        title
+        id
+      }
+    }
+  }
+}`;
+
+export { getTasksQuery, getProjectsQuery, addTaskMutation, addProjectMutation, getTaskDetailQuery };
