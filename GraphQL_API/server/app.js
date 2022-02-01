@@ -5,6 +5,7 @@ const schema = require('./schema/schema');
 // const schema = require('./schema/schema_orig');
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config()
 
 const app = express();
 
@@ -22,7 +23,9 @@ app.listen(4000, ()=> {
 });
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/graphql');
+const db = process.env.MONGO_DB
+mongoose.connect(db);
+// mongoose.connect('mongodb://localhost/graphql');
 mongoose.connection.on('error', (error) => {
   console.error(error);
 });
