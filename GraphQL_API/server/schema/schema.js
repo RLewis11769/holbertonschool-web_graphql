@@ -43,6 +43,7 @@ const TaskType = new GraphQLObjectType({
     title: { type: GraphQLString },
     weight: { type: GraphQLInt },
     description: { type: GraphQLString },
+    projectId: { type: GraphQLID },
     project: {
       type: ProjectType,
       resolve: (parent, args) => Project.findById(parent.projectId)
