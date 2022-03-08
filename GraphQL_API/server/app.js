@@ -19,16 +19,14 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 app.listen(4000, ()=> {
-  console.log('now listening for request on port 4000')
+  console.log('Now listening for requests on port 4000')
 });
 
 // Connect to MongoDB
 const db = process.env.MONGO_DB
 mongoose.connect(db);
 // mongoose.connect('mongodb://localhost/graphql');
-mongoose.connection.on('error', (error) => {
-  console.error(error);
-});
+
 mongoose.connection.once('open', () => {
-  console.log('connected to database');
+  console.log('Connected to database');
 });

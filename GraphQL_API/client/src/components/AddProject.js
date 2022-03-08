@@ -1,13 +1,13 @@
-import {
-  useState,
-  //useEffect
-} from "react";
+import { useState } from "react";
 import { graphql } from "react-apollo";
 import { flowRight as compose } from "lodash";
 import { getProjectsQuery, addProjectMutation } from "../queries/queries";
 
 function AddProject(props) {
+  // Component to add new project
 
+  // Define state variables in inputsProject object
+  // inputsProject is object, setInputsProject is function to set state
   const [inputsProject, setInputsProject] = useState({
     title: '',
     weight: 1,
@@ -15,14 +15,18 @@ function AddProject(props) {
   });
 
   const handleChange = (e) => {
+    // When user changes input, update state
     const newInputsProject = {
       ...inputsProject
     };
-    newInputsProject[e.target.name] = e.target.value
+    // weight is always string when passed as input, so need to cast for gql query
+    if (e.target.name === "weight") newInputsProject[e.target.name] = parseInt(e.target.value);
+    else newInputsProject[e.target.name] = e.target.value
     setInputsProject(newInputsProject)
   }
 
   const submitForm = (e) => {
+    // When user submits form, add project to database
     e.preventDefault();
     // Call mutation with variables
     props.addProjectMutation({
@@ -37,6 +41,7 @@ function AddProject(props) {
   }
 
   return (
+    // Structure of AddProject component using functions/state defined above
     <form
       className="project"
       id="add-project"
@@ -69,6 +74,8 @@ function AddProject(props) {
   );
 }
 
+// Link ApolloClient to AddProject component
+// Provide access to GraphQL data based on ApolloProvider in App.js
 export default compose(
   graphql(getProjectsQuery, { name: "getProjectsQuery" }),
   graphql(addProjectMutation, { name: "addProjectMutation" })

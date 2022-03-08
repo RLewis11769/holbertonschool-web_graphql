@@ -1,3 +1,4 @@
+// Define schema without database and models/ - otherwise same as schema.js
 const {
   GraphQLObjectType,
   GraphQLSchema,

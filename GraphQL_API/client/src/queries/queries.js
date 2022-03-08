@@ -18,6 +18,7 @@ const getProjectsQuery = gql
 
 // Define variables and types to pass into mutation
 const addTaskMutation = gql
+// ! defines required fields as variables - returns title/id only
 `mutation($title: String!, $weight: Int!, $description: String!, $projectId: ID!)
   {
     addTask(
@@ -45,6 +46,7 @@ const addProjectMutation = gql
 }`;
 
 const getTaskDetailQuery = gql
+// Note that id is not required because does not originally exist - only in refetch
 `query($id: ID) {
   task(id: $id) {
     id

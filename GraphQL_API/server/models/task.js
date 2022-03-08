@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 // Define schema for task instances
-const taskSchema = new mongoose.Schema({
+const taskSchema = new Schema({
   title: String,
   weight: Number,
   description: String,
@@ -9,4 +9,4 @@ const taskSchema = new mongoose.Schema({
 });
 
 // Export model based on schema
-module.exports = mongoose.model('Task', taskSchema);
+module.exports = model('Task', taskSchema);

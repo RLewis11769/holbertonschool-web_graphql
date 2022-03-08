@@ -10,6 +10,8 @@ const client = new ApolloClient({
 });
 
 function App() {
+  // Primary component including components for adding/viewing tasks and projects
+  // Wrapped in ApolloProvider to allow Apollo Client on given uri to be used
   return(
     <ApolloProvider client={client}>
       <div id="main">
